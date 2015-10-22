@@ -1,0 +1,893 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Angular2</title>
+
+		<meta name="description" content="">
+		<meta name="author" content="Jørn Are Hatlelid">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/sky.css" id="theme">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+		<style>
+			.js, .ts, .html, .css, .angular{
+				background-repeat: no-repeat;
+				background-position: top right;
+				background-size: 3%;
+			}
+			.js {
+				background-image: url(img/jslogo.png);
+			}
+			.ts {
+				background-image: url(img/tslogo.png);
+			}
+			.html {
+				background-image: url(img/html5logo.png);
+			}
+			.css {
+				background-image: url(img/html5logo.png);
+			}
+			.angular {
+				background-image: url(img/angularlogo.png);
+			}
+			
+			img.inline {
+				border:none !important;
+				box-shadow: none !important;
+				margin-bottom: -40px !important;
+			}
+			.phone {
+				position:fixed;
+				right: -600px;
+				top: 100px;
+				width: 380px;
+				height: 600px;
+				border: 1px solid gray;
+				background: black;
+				border-radius: 20px;
+				transition: 0.5s ease-in-out;
+				z-index: 100;
+			}
+			#appPreviewWindow {
+				position: relative;
+				background: white;
+				width: 360px;
+				height: 500px;
+				margin: 30px 10px;
+				border-radius: 2px;
+				border: none;
+			}
+			.phone .btnHome {
+				border: 1px solid #222;
+				border-radius: 10px;
+				height: 20px;
+				width: 80px;
+				margin: 0 auto;
+				box-shadow: 1px 1px 1px #888888;
+			}
+		</style>
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+		// Printing and PDF exports
+
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+
+		//Phone emulation
+			var phone,
+				phoneVisible = false,
+				appPreviewWindow;
+			document.addEventListener('DOMContentLoaded', onLoad);
+			document.addEventListener('keydown', function(e) {
+				if(e.which == 68) { //d for device
+					togglePhone();
+				}
+			});
+			
+			function onLoad(){
+				phone = document.getElementById('phone');
+				appPreviewWindow = document.getElementById('appPreviewWindow');
+				//loadPhone('../1 ES5 Hello World/index.html');
+				//loadPhoneContent('hello');
+				// Full list of configuration options available at:
+				// https://github.com/hakimel/reveal.js#configuration
+				addEventListeners(Reveal);
+				Reveal.initialize({
+					controls: true,
+					progress: true,
+					history: true,
+					center: true,
+	
+					transition: 'slide', // none/fade/slide/convex/concave/zoom
+	
+					// Optional reveal.js plugins
+					dependencies: [
+						{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+						{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+						{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+						{ src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+						{ src: 'plugin/zoom-js/zoom.js', async: true },
+						{ src: 'plugin/notes/notes.js', async: true }
+					]
+				});
+
+			
+				
+
+			}
+			
+			function addEventListeners(reveal) {
+				var add = reveal.addEventListener;
+				add('hidephone', function(evt){
+					hidePhone();
+				});
+				
+				add('templates', function(evt){
+					loadPhone('../2 TS Bindings/index.html');
+				});
+								
+				add('forms', function(evt) {
+					loadPhone('../5 TS Forms & Validation/index.html');
+				});
+				
+				add('routing', function(evt) {
+					loadPhone('../3 TS Routing/index.html');
+				});
+				add('http', function(evt) {
+					loadPhone('../4 TS Http/index.html');
+				});
+				
+				add('example1', function(evt) {
+					loadPhone('../example/step1/index.html');
+				});
+			}
+			
+			function getCode(elmId) {
+				var code = document.getElementById(elmId);
+				if(!code.rawCode){
+					code.rawCode = trimCode(code.innerHTML);
+				}
+				
+				return code.rawCode;
+			}
+			
+			function trimCode(code) {
+				return code.replace(/<!--/, '').replace(/-->/, '').replace(/&lt;\/body/, '</body').trim();
+			}
+			
+			function togglePhone() {
+				phoneVisible ? hidePhone() : showPhone();
+			}
+			
+			function showPhone() {
+				phone.style.right = '0px';
+				phoneVisible = true;
+			}
+			
+			function hidePhone() {
+				phone.style.right = '-600px';
+				phoneVisible = false;
+			}
+			
+			function loadPhone(uri) {
+				appPreviewWindow.src = uri;
+				showPhone();
+			}
+			
+			function loadPhoneContent(content) {
+				var src = '<base href="http://127.0.0.1:3000/"><script>console.log(location);<' + '/script>',
+					content2 = content.replace(/<head>/, '<heead>' + src);
+				appPreviewWindow.srcdoc = content2;// = 'data:text/html,' + encodeURIComponent(content2);
+				showPhone();
+			}
+			
+
+		</script>
+
+
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+		<div style="position:fixed; top:20px;left:20px">
+			<img src="img/computas_logo.png" style = "width: 150px"/>
+		</div>
+		<div style="position:fixed; top:20px;right:30px;color:rgb(7,70,109);font-family: din, 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+			<h1>@jornare</h1>
+		</div>
+		<div id="phone" class="phone">
+			<iframe id="appPreviewWindow"></iframe>
+			<div class="btnHome"></div>
+		</div>
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+					<img class="inline" src="img/angularlogo.png" style="width: 17%;height:17%"/><h1 style="display:inline-block">ngular2</h1>
+					<h3>Bleeding edge</h3>
+					<h3>Application development</h3>
+					<small>with</small>
+					<h3>Web technologies</h3>
+					<p>
+						<small>Presented by <a href="http://jornare.no">Jørn Are Hatlelid</a> / <a href="http://twitter.com/jornare">@jornare</a></small>
+						<small>Principal Engineer @ <a href="http://computas.com">Computas</a>, Web Application developer</small>
+					</p>
+				</section>
+
+				<section>
+					<h2>Overview</h2>
+					<p>We will</p>
+					<p>Review some history</p>
+					<p>Talk some theory</p>
+					<p>Build a small app</p>
+				</section>
+				
+				<section>
+					<section>
+						<h2>Some History & Background</h2>
+					</section>
+					<section style="text-align:left">
+						<p>1991 Static HTML - Tim Berners Lee @CERN</p>
+						<p class="fragment">1994 W3C @ MIT, CSS - Håkon Wium Lie</p>
+						<p class="fragment">1995 JavaScript - Brendan Eich (10 days)</p>
+						<p class="fragment">1996 CSS in IE3 & Netscape</p>
+						<p class="fragment">1996 My first webpage</p>
+						<p class="fragment">1998 ECMAScript 1 & 2</p>
+						<p class="fragment">1999 ECMAScript 3, XHTMLHTTP</p>
+						<p class="fragment">2002 Web 2.0</p>
+						<p class="fragment">2006 jQuery - cross browser</p>
+						<aside class="notes">
+							<p>kb/s</p>
+							<p>Browser war</p>
+							<p>Ajax: A New Approach to Web Applications (Jesse James Garrett 2005)</p>
+							<p>Script enabled pages</p>
+						</aside>
+					</section>
+					<section style="text-align:left">
+						<p>2009 ECMAScript 5 (HTML5) & Angular 1.0 & PhoneGap & NodeJS</p>
+						<p class="fragment">2010 KnockoutJS - Steve Sanderson (MS)</p>
+						<p class="fragment">2011 CSS 2.1</p>
+						<p class="fragment">2012 TypeScript (MS), MeteorJS</p>
+						<p class="fragment">2013 React (Facebook)</p>
+						<p class="fragment">2015 ECMAScript 6/2015 (June)</p>
+						<p class="fragment">2016 ECMAScript 2016 & Angular 2.0</p>
+						<aside class="notes">
+							<p>Joyent Node</p>
+							<p>CSS 3, 4 - No full implementations?</p>
+						</aside>
+					</section>					
+					<section>
+						<h3>From web to web applications to</h3>
+						<h3>applications with web technologies</h3>
+						<p class="fragment">HTML = Reading & Form submission</p>
+						<p class="fragment">HTML + CSS = Pretty reading & forms</p>
+						<p class="fragment">HTML + CSS + JS = UX, less page refresh</p>
+						<p class="fragment">ES2015+ + HTML + CSS = Application</p>
+						<p class="fragment">Compile & bundle for web and/or devices</p>
+						<aside class="notes">
+							<p>Separation of concerns, 
+							Scalable</p>
+							<p>Offline storage or PhoneGap</p>
+						</aside>
+					</section>
+					<section>
+						<h3>ES2015 JavaScript goes serious</h3>
+						<p class="fragment">Classes</p>
+						<p class="fragment">Modules</p>
+						<p class="fragment">Extend & Inherit</p>
+						<p class="fragment">Block scoping (let)</p>
+						<p class="fragment">Arrow functions</p>
+						<p class="fragment">Promises</p>
+						<p class="fragment">Generators</p>
+						<p class="fragment">Template strings</p>
+
+						<aside class="notes">
+							<p>Template strings: backtick</p>
+						</aside>
+					</section>
+					<section>
+						<h3>ES2016+ takes it further</h3>
+						<p class="fragment">Decorators</p>
+						<p class="fragment">Async / Await</p>
+						<p class="fragment">Observables</p>
+						<p class="fragment">Exponential operator (**)</p>
+						<p class="fragment">SIMD & Primitives</p>
+						<aside class="notes">
+							<p></p>
+						</aside>
+					</section>
+					<section>
+						<h3>TypeScript helps you</h3>
+						<p class="fragment">On top of JavaScript</p>
+						<p class="fragment">Compiles to ESx</p>
+						<p class="fragment">Provides types, decorators & code complete</p>
+						<p class="fragment">Will probably die...</p>
+						<aside class="notes">
+							<p></p>
+						</aside>
+					</section>
+					<section>
+						<h3>So what is Angular2?</h3>
+						<p>NOT Angular1 + 1<p>
+						<p>A JavaScript framework</p>
+						<p>Less code</>
+						<p>Testable code</p>
+						<p>Good practices & patterns</p>
+						<p>Build apps with great user experience</p>
+						<p>Deploy everywhere (web, phone, desktop, watch)</p>
+					</section>
+				</section>
+				
+				<section>
+					<section>
+						<h2>Modules & Module loaders</h2>
+						<ul>
+							<li>Similar to nodejs modules, but for the client</li>
+							<li>ECMAScript 2015(ES6)</li>
+							<li>Several standards</li>
+							<li>Scoping, encapsulation</li>
+							<li>Prevent &quot;bleeding&quot;</li>
+							<li>Bundle into packages and/or lazy load</li>
+							<li>Code completion</li>
+						</ul>
+					</section>
+					<section>
+						<h3>Similar to nodejs modules, but for the client</h3>
+						<p>Every file gets its own scope
+						<p>Functionality needs to be exported to be used outside the file</p>
+						</p>
+						<pre><code class="js" data-trim contenteditable><!--
+// A classical closure
+(function(namespace) {
+	namespace.myFunc = function() {};
+}(window.myNamespace));
+							--></code></pre>						
+						<pre><code class="ts" data-trim contenteditable><!--
+//Not only Typescript, but an ES2015+ standard
+//Imported with System.js (or Node module system or similar)
+export function myFunc(){}
+							--></code></pre>
+					</section>
+					<section>
+						<h3>Using a module</h3>
+						<p>Referenced by path (or mapped in configuration)
+						<p>System.js is popular</p>
+						<p>imports are native in ES2015+ and TypeScript</p>
+						<pre><code class="ts" data-trim contenteditable>
+							import {Component} from 'angular2/angular2';
+							</code></pre>
+					</section>
+					<section>
+						<h3>Code completion with typing files (.d.ts), can be used in ESx</h3>
+
+						<pre><code class="js" data-trim contenteditable><!--
+/// <reference path="typings/angular2/angular2.d.ts" />
+							--></code></pre>
+					</section>
+				</section>
+				
+				
+				<section>
+					<section>
+						<h2><img src="img/angularlogo.png" class="inline" style="width:17%"/>Core concepts</h2>
+						<ul>
+							<li>Component</li>
+							<li>View & Template</li>
+							<li>Class</li>
+							<li>Bootstrap</li>
+							<li>Service</li>
+						</ul>
+					</section>
+					<section>
+						<h3><img src="img/angularlogo.png" class="inline" style="width:12%"/>Concepts overview</h3>
+						<img src="img/angular2_schema.png" width="25%" style="border:none; float: left"/>
+						<p>&nbsp;</p>
+						<p>Forward binding with events</p>
+						<p>Reverse binding automagically</p>
+						<p>&nbsp;</p>
+						<p>Services often used to share data and talk to server</p>
+					</section>
+					<section>
+						<h3>Data binding flow</h3>
+						<img src="img/parentchild.png"  style="border:none;"/>
+						<p>
+							Bind both ways with [(ng-model)]="expression"
+					</section>
+					<section>
+						<h3>Component</h3>
+						<p>An app is a tree-structure of components</p>
+						<pre><code class="ts" data-trim contenteditable><!--
+import {Component} from 'angular2/angular2';
+@Component({
+	selector: 'my-app'
+});
+							--></code></pre>
+							
+						<pre><code class="js" data-trim contenteditable><!--
+ng.Component({
+	selector: 'my-app'
+});
+							--></code></pre>
+							<p>host
+							</p>
+					</section>
+					<section>
+						<h3>View & Template</h3>
+						<pre><code class="ts" data-trim contenteditable><!--
+import {Component, View} from 'angular2/angular2';
+@Component({
+	selector: 'my-app'
+});
+@View({
+	template: '<h1>Hello UIO</h1>', // Alternatively templateUrl: 'myTemplate.html'
+	directives: [ChildComponent] // Components and directives used in the template
+});
+							--></code></pre>
+						<pre><code class="js" data-trim contenteditable><!--
+ng.Component({
+	selector: 'my-app'
+}).View({
+	template: '<h1>Hello UIO</h1>'
+});
+							--></code></pre>
+							<p>templateUrl
+							</p>
+					</section>
+					<section>
+						<h3>Class</h3>
+						<pre><code class="ts" data-trim contenteditable><!--
+import {Component, View} from 'angular2/angular2';
+@Component(...)
+@View(...)
+export class MyApp {
+	constructor() {
+		this.title = 'Hello';
+	}
+	setTitle(newTitle: string) {
+		this.title = newTitle;
+	}
+}
+							--></code></pre>
+
+						<pre><code class="js" data-trim contenteditable><!--
+var MyApp = ng.Component(...)
+.View(...)
+.Class({
+	constructor: function() {
+		this.title = 'Hello';
+	},
+	setTitle: function (newTitle) {
+		this.title = newTitle;
+	}
+});
+							--></code></pre>
+						<p>implements, extends</p>
+					</section>
+					<section>
+						<h3>Bootstrap</h3>
+						<pre><code class="ts" data-trim contenteditable><!--
+import {bootstrap, Component, View} from 'angular2/angular2';
+
+bootstrap(MyApp);
+							--></code></pre>
+						<pre><code class="js" data-trim contenteditable><!--
+document.addEventListener('DOMContentLoaded', function(){
+	ng.bootstrap(MyApp);
+});
+							--></code></pre>
+					</section>
+					<section>
+						<h3>Service</h3>
+						<p>Functionality without a graphical equivalent</p>
+						<p>Normally available as singletons with dependency injection</p>
+					</section>
+					
+				</section>
+				
+				
+				
+				
+				<section>
+					<section>
+						<h2>Template Syntax</h2>
+					</section>
+					<section data-state="templates">
+						<h3>Local variables</h3>
+						<pre><code class="angular html" data-trim contenteditable><!--
+							<input #myValue />
+							--></code></pre>
+					</section>
+					<section>
+						<h3>{{ Binding }}</h3>
+						<pre><code class="angular html" data-trim contenteditable><!--
+<input #my-value />
+<p>{{myValue}}</p>
+							--></code></pre>
+							<p>
+								#my-value vs myValue
+							</p>
+					</section>
+					<section>
+						<h3>(Event)="Statement"</h3>
+						<p>Events are pushers of change</p>
+						<pre><code class="angular html" data-trim contenteditable><!--
+<input #my-value (keydown)="x"/> bug in alpha requires a fake handler
+							--></code></pre>
+						<pre><code class="angular html" data-trim contenteditable><!--
+<input #my-value (keydown)="setValue($event, myValue.value)"/>
+							--></code></pre>
+							<p>click, dblclick</p>
+							<p>keydown, keyup</p>
+							<p>mouseover, mouseenter, mouseleave</p>
+					</section>
+					<section>
+						<h2>[Property]="Expression"</h2>
+						<p>Properties are reactive listeners</p>
+						<pre><code class="angular html" data-trim contenteditable><!--
+<div [style.color]="myValue.value">
+	<input #my-value />
+</div>
+							--></code></pre>
+							<p>
+								src, href, visible, hidden, style, class, class={'name':'condition'}
+							</p>
+					</section>
+					<section>
+						<h3>*directivetemplate="Expression"</h3>
+						<p>The star lets you void writing the template element</p>
+						<pre><code class="angular html" data-trim contenteditable><!--
+<div *ng-for="#item of items; #i = index;">
+	{{item}}
+</div>
+							--></code></pre>
+							<p>is the same as</p>
+						<pre><code class="angular html" data-trim contenteditable><!--
+<template ng-for [ngForOf]="items" #t="$implicit" #index="i">
+	<div [model]="item" [index]="i">
+		{{item}}
+	</div>
+</template>
+							--></code></pre>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h2>Native Directives</h2>
+						<p>
+							A directive is a custom element, attribute or class that modifies existing content rather than providing its own.
+						</p>
+						<p><small>Or: A component with no template</small></p>
+					</section>
+					<section>
+						<h3>Directives must be imported and listed in @View</h3>
+						<pre><code class="ts" data-trim contenteditable><!--
+import {bootstrap, Component, View, For} from 'angular2/angular2';
+
+@View({
+	templateUrl: 'template.html',
+	directives: [NgFor]
+})
+class MyApp{
+	constructor() {
+		this.list = [1,2,3];
+	}
+}
+							--></code></pre>
+					</section>
+					<section>
+						<h3>We can &quot;cheat&quot; with native directives</h3>
+						<pre><code class="ts" data-trim contenteditable><!--
+import {bootstrap, Component, View, CORE_DIRECTIVES} from 'angular2/angular2';
+
+@View({
+	templateUrl: 'template.html',
+	directives: [CORE_DIRECTIVES]
+})
+class MyApp{
+	constructor() {
+		this.items = [1,2,3];
+	}
+}
+							--></code></pre>
+							
+							<p>CORE_DIRECTIVES, FORM_DIRECTIVES, ROUTER_DIRECTIVES</p>
+							<p>In ES5 we prefix with ng to get access (ng.CORE_DIRECTIVES)</p>
+							<p>ng-if, ng-for, ng-switch, ng-switch-when, ng-model</p>
+					</section>
+					<section>
+						<h3>*ng-for=&quot;#item of items&quot;</h3>
+						<p>Iterate over a list</p>
+						<pre><code class="angular html" data-trim contenteditable><!--
+<ul *ng-for="#item of items">
+	<li>{{item}}</li>
+</ul>
+							--></code></pre>
+						<pre><code class="angular html" data-trim contenteditable><!--
+<ul *ng-for="#item of items; var i = index;">
+	<li>{{i}} {{item}}</li>
+</ul>
+							--></code></pre>
+					</section>
+					<section>
+						<h3>*ng-if=&quot;condition&quot;</h3>
+						<p>Render content on condition (removes/adds to DOM)</p>
+						<pre><code class="angular html" data-trim contenteditable><!--
+<div *ng-if="items.length == 0">
+	No Items!
+</div>
+							--></code></pre>
+
+					</section>
+					
+				</section>
+				<section>
+					<section>
+						<h2>Forms</h2>
+					</section>
+					<section data-state="forms">
+						<h2>Control</h2>
+						<p>Controls behaviour of all form elements, created by default.</p>
+						<pre><code class="ts" data-trim contenteditable><!--
+import {Control, FORM_DIRECTIVES} from 'angular2/forms';
+
+@Component({ ... })
+@View({ ...
+	directives: [FORM_DIRECTIVES]
+})
+class MyApp {
+	constructor( ... ) {
+		this.myInput: Control = new Control('');
+	}
+}
+							--></code></pre>
+						<pre><code class="angular html" data-trim contenteditable><!--
+<input ng-control="myInput">
+							--></code></pre>
+					</section>
+
+					<section>
+						<h2>Validators</h2>
+						<p>Add validators to the Control to control validation</p>
+						<pre><code class="ts" data-trim contenteditable><!--
+export class myApp {
+	myInput: Control = new Control('default value', Validators.required);
+}
+							--></code></pre>
+						<p>Bind it by name</p>
+						<pre><code class="angular html" data-trim contenteditable><!--
+<input ng-control="myInput" [class.invalid]="!myInput.valid">
+							--></code></pre>
+						<p>valid, invalid, pristine, dirty</p>
+					</section>
+					<section>
+						<h2>Custom validators</h2>
+
+						<pre><code class="ts" data-trim contenteditable><!--
+import {Control} from 'angular2/angular2';
+
+export var CustomValidators = {
+	atComputas(control:Control) {
+		if(!control.value.match(/@computas.com$/)) {
+			return {
+				notAtComputas: true
+			};
+		}
+		return null; // return null = valid
+	}
+}
+							--></code></pre>
+						<p>Import and use</p>
+						<pre><code class="ts" data-trim contenteditable><!--
+// assuming the file is called validators.ts
+import {CustomValidators} from 'validators'; 
+...
+export class myApp {
+	myInput: Control = new Control('default value',
+		CustomValidators.atComputas);
+}
+							--></code></pre>
+					</section>
+					<section>
+						<h3>Control group and array</h3>
+						<p></p>
+						<pre><code class="ts" data-trim contenteditable><!--
+ctrlFirst: Control = new Control('');
+ctrlLast: Control = new Control('');
+formGroup: ControlGroup = new ControlGroup({
+		name: new ControlGroup({
+			first: this.ctrlFirst,
+			last: this.ctrlLast
+		})
+	});
+							--></code></pre>
+						<pre><code class="angular html" data-trim contenteditable><!--
+<form [ng-form-model]="formGroup">
+	<div ng-control-group="name">
+		<p>First: <input ng-control="first">
+			<span *ng-if="!ctrlFirst.valid"> [required]</span>
+		</p>
+		<p>Last: <input ng-control="last">
+			<span *ng-if="!ctrlLast.valid"> [required]</span>
+		</p>
+	</div>
+	<p>Email: <input ng-control="email">
+		<span *ng-if="!ctrlEmail.valid && ctrlEmail.dirty"> [Not a Computas email]</span>
+	</p>
+</form>
+<div *ng-if="formGroup.valid">Bazinga!</div>
+<div *ng-if="formGroup.dirty">Dirty, dirty, dirty...</div>
+							--></code></pre>
+					</section>
+				</section>
+				<section>
+					<section data-state="hidephone">
+						<h2>Routing</h2>
+						<p>Navigate our app without refreshing the full page</p>
+					</section>
+					<section data-state="routing">
+						<p><small>We need a component that reacts to routes</small></p>
+						<pre style="width:auto"><code class="ts" data-trim contenteditable style="max-height:600px;max-width:1200px"><!--
+import {Component, View, bootstrap, bind} from 'angular2/angular2';
+import {Router, RouteConfig, RouterLink, RouterOutlet,
+	ROUTER_DIRECTIVES, ROUTER_PROVIDERS} from 'angular2/router';
+import {Location, LocationStrategy, HashLocationStrategy} from 'angular2/router';
+import {Page1} from 'page1';
+import {Page2} from 'page2';
+@Component({
+      selector: 'my-app'
+    })
+@View({
+      template: '...',
+      directives: [RouterLink, RouterOutlet]
+    })
+@RouteConfig([
+	{ path: '/', redirectTo: '/Page1'},
+	{ path: '/Page1', component: Page1, as: 'Page1'},
+	{ path: '/Page2', component: Page2, as: 'Page2'}
+])
+export class App {
+    constructor() { }
+}
+bootstrap(App, [ROUTER_PROVIDERS,
+	bind(LocationStrategy).toClass(HashLocationStrategy)]);
+							--></code></pre>
+					</section>
+					<section>
+						<h3>And a template with the router-outlet component</h3>
+						<pre><code class="angular html" data-trim contenteditable><!--
+<nav>
+	<a [router-link]="['/Page1']'">Page 1</a>
+	<a [router-link]="['/Page2']">Page 2</a>
+</nav>
+<main>
+	<router-outlet></router-outlet>
+	Content will be inserted here
+</main>
+							--></code></pre>
+					</section>
+					
+				</section>
+				
+				<section>
+					<section data-state="hidephone">
+						<h2>HTTP</h2>
+						<p>Talking to the/a server</p>
+					</section>
+					<section data-state="http">
+						<pre style="height:150%"><code class="angular html" data-trim contenteditable style="max-height:500px"><!--
+import {Component, View, bootstrap, NgFor} from 'angular2/angular2';
+import {Http, HTTP_PROVIDERS} from 'angular2/http';
+@Component({
+      selector: 'my-app'
+    })
+@View({
+      template: '<div *ng-for="#item of list">{{item}}</div>',
+      directives: [NgFor]
+    })
+export class App {
+    list: Array<string> = []
+    constructor(http: Http) {
+        http.get('list.json')
+            .map(res => res.json())
+            .subscribe(list => this.list = list);
+    }
+}
+bootstrap(App, HTTP_PROVIDERS);
+							--></code></pre>
+					</section>
+				</section>
+						
+				<section>
+					<section data-state="hidephone">
+						<h2>Creating an app with TypeScript</h2>
+					</section>
+					<section data-state="example1">
+						<pre style="height:150%"><code id="hello1" class="angular html" data-trim contenteditable style="max-height:640px"><!--
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://code.angularjs.org/tools/traceur-runtime.js"></script>
+    <script src="https://code.angularjs.org/tools/system.js"></script>
+    <script src="https://code.angularjs.org/tools/typescript.js"></script>
+    <script src="https://code.angularjs.org/2.0.0-alpha.44/angular2.min.js"></script>
+    <script>
+      System.config({
+        //use typescript for compilation
+        transpiler: 'typescript',
+        //typescript compiler options
+        typescriptOptions: {
+          emitDecoratorMetadata: true
+        },
+        //map tells the System loader where to look for things
+        map: {
+          app: "./app.ts"
+        },
+        //packages defines our app package
+        packages: {
+          app: {
+            defaultExtension: 'ts'
+          }
+        }
+      });
+      System.import('app');
+    </script>
+  </head>
+  <body>
+    <my-app>Loading...</my-app>
+  &lt;/body>
+</html>
+							--></code></pre>
+					</section>
+					<section>
+						<p>Add <a href="http://getbootstrap.com">Bootstrap</a> css</p>
+					</section>
+					<section>
+						<p>Steal a <a href="http://getbootstrap.com/examples/dashboard/">Bootstrap template</a></p>
+					</section>
+					<section>
+						<p>Make a data component</a></p>
+					</section>
+					<section>
+						<p>Refactor it to a service</a></p>
+					</section>
+					
+				</section>
+				
+				<section data-state="hidephone">
+					<h2>Resources & references</h2>
+					<div><a href="http://angular.io">Angular2</a></div>
+					<div><a href="http://material.angularjs.org">Angular1 Material design</a></div>
+					<div><a href="http://go.rangle.io/batarangle">Batarangle - Debugging for Angular2</a></div>
+					<h3>Also useful</h3>
+					<div><a href="http://angular-meteor.com">Angular-meteor</a></div>
+					<div><a href="https://egghead.io/series/angular-2-fundamentals?utm_source=drip&utm_medium=email&utm_campaign=free-angular-2-screencasts&__s=scod2muuw5qwznspfz9v">Angular2 fundamentals on egghead.io</a></div>
+					<div><a href="http://getbootstrap.com">Bootstrap CSS framework</a></div>
+				</section>
+			</div>
+
+		</div>
+
+
+
+	</body>
+</html>

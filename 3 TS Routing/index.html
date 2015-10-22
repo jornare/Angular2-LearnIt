@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base href="./">
+    <!--
+    <script src="https://code.angularjs.org/tools/traceur-runtime.js"></script>
+    <script src="https://code.angularjs.org/tools/system.js"></script>
+    <script src="https://code.angularjs.org/tools/typescript.js"></script>
+    <script src="https://code.angularjs.org/2.0.0-alpha.44/angular2.dev.js"></script>
+    <script src="https://code.angularjs.org/2.0.0-alpha.44/router.dev.js"></script>-->
+    <script src="../lib/traceur-runtime.js"></script>
+    <script src="../lib/system.js"></script>
+    <script src="../lib/typescript.js"></script>
+    <script src="../lib/angular2.dev.js"></script>
+    <script src="../lib/router.dev.js"></script>
+    <script>
+      System.config({
+        //use typescript for compilation
+        transpiler: 'typescript',
+        baseURL: './', //Important!
+        //typescript compiler options
+        typescriptOptions: {
+          emitDecoratorMetadata: true
+        },
+        //map tells the System loader where to look for things
+        map: {
+          app: "./app.ts",          
+          page1: "./page1.ts",          
+          page2: "./page2.ts",          
+        },
+        //packages defines our app package
+        packages: {
+          app: {
+            defaultExtension: 'ts'
+          }
+        }
+      });
+      System.import('app');
+    </script>
+  </head>
+  <body>
+    <my-app>Loading...</my-app>
+  </body>
+</html>

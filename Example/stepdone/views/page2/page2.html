@@ -1,0 +1,27 @@
+<h2>This is page 2</h2>
+<p>Content from html file</p>
+<div class="table-responsive">
+  <form [ng-form-model]="formGroup">
+    <label>Title</label><input type="text" class="form-control" ng-control="title"/>
+    <label>Count</label><input type="number" class="form-control" ng-control="count"/>
+    <button class="btn" (click)="addTitle()">Add</button>
+  </form>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Id</th>
+        <th>Title</th>
+        <th>Count</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ng-for="#item of items; #i = index;">
+        <td>{{i}}</td>
+        <td>{{item.id}}</td>
+        <td>{{item.title}}</td>
+        <td>{{item.count}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

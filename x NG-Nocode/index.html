@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="app.js"></script>
+    <script>
+      var init = {
+        a: 1,
+        list: [1,2,3]
+      };
+    </script>
+  </head>
+  <body>
+    <div>
+      <input [(ng-model)]="a"/>{{a}}
+    </div>
+    <div>  
+      <!--Buggy: <input #b (keyup)/>{{b.value}}-->
+    </div>
+    <div *ng-for="#item of list">
+        {{item}}
+    </div>
+    <div *ng-if="list.length==4">3 items!</div>
+  </body>
+</html>
