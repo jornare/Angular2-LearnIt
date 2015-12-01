@@ -24,7 +24,11 @@ export class Page2 {
         this.search = GlobalSearchService.getInstance();
         this.items = [];
         http.get('data/data.json')
-            .map(res => res.json())
+            .map(res => {
+                let result = res.json();
+                result.forEach(item => {item.date = new Date(item.date)})
+                return result;
+            })
             .subscribe(items => this.items = items);
     }
     addTitle() {

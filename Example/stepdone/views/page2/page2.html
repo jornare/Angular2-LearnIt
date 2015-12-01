@@ -6,6 +6,7 @@
     <label>Count</label><input type="number" class="form-control" ng-control="count"/>
     <button class="btn" (click)="addTitle()">Add</button>
   </form>
+  Searching for: {{search.value}}
   <table class="table table-striped">
     <thead>
       <tr>
@@ -13,6 +14,7 @@
         <th>Id</th>
         <th>Title</th>
         <th>Count</th>
+        <th>Date</th>
       </tr>
     </thead>
     <tbody>
@@ -21,6 +23,7 @@
         <td>{{item.id}}</td>
         <td>{{item.title}}</td>
         <td>{{item.count}}</td>
+        <td>{{item.date | date:'medium' }}</td>
       </tr>
     </tbody>
   </table>
