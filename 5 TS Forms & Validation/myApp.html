@@ -1,16 +1,16 @@
 <h1>Forms</h1>
-<form [ng-form-model]="formGroup">
-	<div ng-control-group="name">
-		<p>First: <input ng-control="first">
-			<span *ng-if="!ctrlFirst.valid"> [required]</span>
+<form [ngFormModel]="formGroup">
+	<div ngControlGroup="name">
+		<p>First: <input ngControl="first">
+			<span *ngIf="!ctrlFirst.valid"> [required]</span>
 		</p>
-		<p>Last: <input ng-control="last">
-			<span *ng-if="!ctrlLast.valid"> [required]</span>
+		<p>Last: <input ngControl="last">
+			<span *ngIf="!ctrlLast.valid"> [required]</span>
 		</p>
 	</div>
-	<p>Email: <input ng-control="email">
-		<span *ng-if="!ctrlEmail.valid && ctrlEmail.dirty"> [Not a Computas email]</span>
+	<p>Email: <input ngControl="email">
+		<span *ngIf="!ctrlEmail.valid && ctrlEmail.dirty"> [Not a Computas email]</span>
 	</p>
 </form>
-<div *ng-if="formGroup.valid">Bazinga!</div>
-<div *ng-if="formGroup.dirty">Dirty, dirty, dirty...</div>
+<div *ngIf="formGroup.valid">Bazinga!</div>
+<div *ngIf="formGroup.dirty">Dirty, dirty, dirty...</div>

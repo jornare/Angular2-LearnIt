@@ -1,14 +1,12 @@
-import {Component, View, Inject,  Injectable, CORE_DIRECTIVES, FORM_DIRECTIVES, Control, ControlGroup} from 'angular2/angular2';
-import {Http} from 'angular2/http';
+import {Component} from 'angular2/core';
+import {Control, ControlGroup} from 'angular2/common';
+import {Http, HTTP_PROVIDERS} from 'angular2/http';
 import {GlobalSearchService} from 'services/globalSearchService.ts'
 
 @Component({
       selector: 'page2',
-      providers: [GlobalSearchService]
-    })
-@View({
-      templateUrl: 'views/page2/page2.html',
-      directives: [CORE_DIRECTIVES, FORM_DIRECTIVES]
+      providers: [GlobalSearchService, HTTP_PROVIDERS],
+      templateUrl: 'views/page2/page2.html'
     })
    
 export class Page2 {
@@ -24,12 +22,11 @@ export class Page2 {
         this.search = GlobalSearchService.getInstance();
         this.items = [];
         http.get('data/data.json')
-            .map(res => {
+            .subscribe(res => {
                 let result = res.json();
                 result.forEach(item => {item.date = new Date(item.date)})
-                return result;
-            })
-            .subscribe(items => this.items = items);
+                this.items = result;
+            });
     }
     addTitle() {
         this.items.push(

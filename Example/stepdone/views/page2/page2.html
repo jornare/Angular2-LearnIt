@@ -1,9 +1,9 @@
 <h2>This is page 2</h2>
 <p>Content from html file</p>
 <div class="table-responsive">
-  <form [ng-form-model]="formGroup">
-    <label>Title</label><input type="text" class="form-control" ng-control="title"/>
-    <label>Count</label><input type="number" class="form-control" ng-control="count"/>
+  <form [ngFormModel]="formGroup">
+    <label>Title</label><input type="text" class="form-control" ngControl="title"/>
+    <label>Count</label><input type="number" class="form-control" ngControl="count"/>
     <button class="btn" (click)="addTitle()">Add</button>
   </form>
   Searching for: {{search.value}}
@@ -18,7 +18,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ng-for="#item of items; #i = index;">
+      <tr *ngFor="#item of items; #i = index;">
         <td>{{i}}</td>
         <td>{{item.id}}</td>
         <td>{{item.title}}</td>

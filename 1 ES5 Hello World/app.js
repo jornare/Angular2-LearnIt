@@ -1,9 +1,7 @@
 /* global ng */
-var AppComponent = ng
+var AppComponent = ng.core
     .Component({
-      selector: 'my-app'
-    })
-    .View({
+      selector: 'my-app',
       template: '<h1>Hello World!</h1>'
     })
     .Class({

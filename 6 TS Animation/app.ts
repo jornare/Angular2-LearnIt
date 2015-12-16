@@ -1,10 +1,9 @@
 /// <reference path="../typings/angular2/angular2.d.ts" />
-import {Component, View, bootstrap} from 'angular2/angular2';
+import {bootstrap} from 'angular2/platform/browser';
+import {Component} from 'angular2/core';
 
 @Component({
-      selector: 'my-app'
-    })
-@View({
+      selector: 'my-app',
       template: '<h1>Hello World!</h1>'
     })
 export class App {

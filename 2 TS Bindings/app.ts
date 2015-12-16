@@ -1,15 +1,13 @@
 /// <reference path="../typings/angular2/angular2.d.ts" />
-import {Component, View, bootstrap, CORE_DIRECTIVES} from 'angular2/angular2';
+import {bootstrap} from 'angular2/platform/browser';
+import {Component} from 'angular2/core';
 
 @Component({
-      selector: 'my-app'
-    })
-@View({
-      templateUrl: 'app.html',
-      directives: [CORE_DIRECTIVES]
+      selector: 'my-app',
+      templateUrl: 'app.html'
     })
 export class App {
-    ticker: Number = 0;
+    ticker: number = 0;
     items: Array<string> = [];
     constructor() {
         setInterval(() => { // Arrow functions makes this refer to the class
