@@ -411,20 +411,20 @@ export function myFunc(){}
 						<h3>Data binding flow</h3>
 						<img src="img/parentchild.png"  style="border:none;"/>
 						<p>
-							Bind both ways with [(ng-model)]="expression"
+							Bind both ways with [(ngModel)]="expression"
 					</section>
 					<section>
 						<h3>Component</h3>
 						<p>An app is a tree-structure of components</p>
 						<pre><code class="ts" data-trim contenteditable><!--
-import {Component} from 'angular2/angular2';
+import {Component} from 'angular2/core';
 @Component({
 	selector: 'my-app'
 });
 							--></code></pre>
 							
 						<pre><code class="js" data-trim contenteditable><!--
-ng.Component({
+ng.core.Component({
 	selector: 'my-app'
 });
 							--></code></pre>
@@ -432,21 +432,18 @@ ng.Component({
 							</p>
 					</section>
 					<section>
-						<h3>View & Template</h3>
+						<h3>Template</h3>
 						<pre><code class="ts" data-trim contenteditable><!--
-import {Component, View} from 'angular2/angular2';
+import {Component} from 'angular2/core';
 @Component({
-	selector: 'my-app'
-});
-@View({
+	selector: 'my-app',
 	template: '<h1>Hello UIO</h1>', // Alternatively templateUrl: 'myTemplate.html'
-	directives: [ChildComponent] // Components and directives used in the template
+	directives: [ChildComponent] // Components and directives used in the template, excluding core directives
 });
 							--></code></pre>
 						<pre><code class="js" data-trim contenteditable><!--
-ng.Component({
-	selector: 'my-app'
-}).View({
+ng.core.Component({
+	selector: 'my-app',
 	template: '<h1>Hello UIO</h1>'
 });
 							--></code></pre>
@@ -456,9 +453,8 @@ ng.Component({
 					<section>
 						<h3>Class</h3>
 						<pre><code class="ts" data-trim contenteditable><!--
-import {Component, View} from 'angular2/angular2';
+import {Component} from 'angular2/core';
 @Component(...)
-@View(...)
 export class MyApp {
 	constructor() {
 		this.title = 'Hello';
@@ -470,8 +466,7 @@ export class MyApp {
 							--></code></pre>
 
 						<pre><code class="js" data-trim contenteditable><!--
-var MyApp = ng.Component(...)
-.View(...)
+var MyApp = ng.core.Component(...)
 .Class({
 	constructor: function() {
 		this.title = 'Hello';
@@ -486,13 +481,14 @@ var MyApp = ng.Component(...)
 					<section>
 						<h3>Bootstrap</h3>
 						<pre><code class="ts" data-trim contenteditable><!--
-import {bootstrap, Component, View} from 'angular2/angular2';
-
+import {bootstrap} from 'angular2/platform/browser';
+import {Component} from 'angular2/core';
+...
 bootstrap(MyApp);
 							--></code></pre>
 						<pre><code class="js" data-trim contenteditable><!--
 document.addEventListener('DOMContentLoaded', function(){
-	ng.bootstrap(MyApp);
+	ng.platform.browser.bootstrap(MyApp);
 });
 							--></code></pre>
 					</section>
@@ -520,21 +516,18 @@ document.addEventListener('DOMContentLoaded', function(){
 					<section>
 						<h3>{{ Binding }}</h3>
 						<pre><code class="angular html" data-trim contenteditable><!--
-<input #my-value />
+<input #myValue />
 <p>{{myValue}}</p>
 							--></code></pre>
-							<p>
-								#my-value vs myValue
-							</p>
 					</section>
 					<section>
 						<h3>(Event)="Statement"</h3>
 						<p>Events are pushers of change</p>
 						<pre><code class="angular html" data-trim contenteditable><!--
-<input #my-value (keydown)="x"/> bug in alpha requires a fake handler
+<input #myValue (keydown)="x"/> bug in beta requires a fake handler
 							--></code></pre>
 						<pre><code class="angular html" data-trim contenteditable><!--
-<input #my-value (keydown)="setValue($event, myValue.value)"/>
+<input #myValue (keydown)="setValue($event, myValue.value)"/>
 							--></code></pre>
 							<p>click, dblclick</p>
 							<p>keydown, keyup</p>
@@ -545,7 +538,7 @@ document.addEventListener('DOMContentLoaded', function(){
 						<p>Properties are reactive listeners</p>
 						<pre><code class="angular html" data-trim contenteditable><!--
 <div [style.color]="myValue.value">
-	<input #my-value />
+	<input #myValue />
 </div>
 							--></code></pre>
 							<p>
@@ -556,13 +549,13 @@ document.addEventListener('DOMContentLoaded', function(){
 						<h3>*directivetemplate="Expression"</h3>
 						<p>The star lets you void writing the template element</p>
 						<pre><code class="angular html" data-trim contenteditable><!--
-<div *ng-for="#item of items; #i = index;">
+<div *ngFor="#item of items; #i = index;">
 	{{item}}
 </div>
 							--></code></pre>
 							<p>is the same as</p>
 						<pre><code class="angular html" data-trim contenteditable><!--
-<template ng-for [ngForOf]="items" #t="$implicit" #index="i">
+<template ngFor [ngForOf]="items" #t="$implicit" #index="i">
 	<div [model]="item" [index]="i">
 		{{item}}
 	</div>
@@ -572,67 +565,51 @@ document.addEventListener('DOMContentLoaded', function(){
 				</section>
 				<section>
 					<section>
-						<h2>Native Directives</h2>
+						<h2>Directives</h2>
 						<p>
 							A directive is a custom element, attribute or class that modifies existing content rather than providing its own.
 						</p>
 						<p><small>Or: A component with no template</small></p>
 					</section>
 					<section>
-						<h3>Directives must be imported and listed in @View</h3>
+						<h3>Directives must be imported and listed in @Component</h3>
 						<pre><code class="ts" data-trim contenteditable><!--
-import {bootstrap, Component, View, For} from 'angular2/angular2';
+import {Component} from 'angular2/core';
+import {MyDirective} from 'custom/myDirectives';
 
-@View({
+@Component({
 	templateUrl: 'template.html',
-	directives: [NgFor]
+	directives: [MyDirective]
 })
 class MyApp{
 	constructor() {
-		this.list = [1,2,3];
 	}
 }
 							--></code></pre>
 					</section>
 					<section>
-						<h3>We can &quot;cheat&quot; with native directives</h3>
-						<pre><code class="ts" data-trim contenteditable><!--
-import {bootstrap, Component, View, CORE_DIRECTIVES} from 'angular2/angular2';
-
-@View({
-	templateUrl: 'template.html',
-	directives: [CORE_DIRECTIVES]
-})
-class MyApp{
-	constructor() {
-		this.items = [1,2,3];
-	}
-}
-							--></code></pre>
-							
-							<p>CORE_DIRECTIVES, FORM_DIRECTIVES, ROUTER_DIRECTIVES</p>
-							<p>In ES5 we prefix with ng to get access (ng.CORE_DIRECTIVES)</p>
-							<p>ng-if, ng-for, ng-switch, ng-switch-when, ng-model</p>
+						<h3>Core and Common directives are automatically included</h3>
+						<p>ngIf, ngFor, ngSwitch, ngSwitchWhen, ngModel + form directives</p>
 					</section>
 					<section>
-						<h3>*ng-for=&quot;#item of items&quot;</h3>
+						<h3>*ngFor=&quot;#item of items&quot;</h3>
 						<p>Iterate over a list</p>
 						<pre><code class="angular html" data-trim contenteditable><!--
-<ul *ng-for="#item of items">
+<ul *ngFor="#item of items">
 	<li>{{item}}</li>
 </ul>
 							--></code></pre>
 						<pre><code class="angular html" data-trim contenteditable><!--
-<ul *ng-for="#item of items; var i = index;">
+<ul *ngFor="#item of items; var i = index;">
 	<li>{{i}} {{item}}</li>
 </ul>
 							--></code></pre>
 					</section>
 					<section>
-						<h3>*ng-if=&quot;condition&quot;</h3>
+						<h3>*ngIf=&quot;condition&quot;</h3>
 						<p>Render content on condition (removes/adds to DOM)</p>
 						<pre><code class="angular html" data-trim contenteditable><!--
-<div *ng-if="items.length == 0">
+<div *ngIf="items.length == 0">
 	No Items!
 </div>
 							--></code></pre>
@@ -648,11 +625,10 @@ class MyApp{
 						<h2>Control</h2>
 						<p>Controls behaviour of all form elements, created by default.</p>
 						<pre><code class="ts" data-trim contenteditable><!--
-import {Control, FORM_DIRECTIVES} from 'angular2/forms';
+import {Control} from 'angular2/common';
 
-@Component({ ... })
-@View({ ...
-	directives: [FORM_DIRECTIVES]
+@Component({
+	... 
 })
 class MyApp {
 	constructor( ... ) {
@@ -661,7 +637,7 @@ class MyApp {
 }
 							--></code></pre>
 						<pre><code class="angular html" data-trim contenteditable><!--
-<input ng-control="myInput">
+<input ngControl="myInput">
 							--></code></pre>
 					</section>
 
@@ -675,7 +651,7 @@ export class myApp {
 							--></code></pre>
 						<p>Bind it by name</p>
 						<pre><code class="angular html" data-trim contenteditable><!--
-<input ng-control="myInput" [class.invalid]="!myInput.valid">
+<input ngControl="myInput" [class.invalid]="!myInput.valid">
 							--></code></pre>
 						<p>valid, invalid, pristine, dirty</p>
 					</section>
@@ -683,7 +659,7 @@ export class myApp {
 						<h2>Custom validators</h2>
 
 						<pre><code class="ts" data-trim contenteditable><!--
-import {Control} from 'angular2/angular2';
+import {Control} from 'angular2/common';
 
 export var CustomValidators = {
 	atComputas(control:Control) {
@@ -721,21 +697,21 @@ formGroup: ControlGroup = new ControlGroup({
 	});
 							--></code></pre>
 						<pre><code class="angular html" data-trim contenteditable><!--
-<form [ng-form-model]="formGroup">
-	<div ng-control-group="name">
-		<p>First: <input ng-control="first">
-			<span *ng-if="!ctrlFirst.valid"> [required]</span>
+<form [ngFormModel]="formGroup">
+	<div ngControlGroup="name">
+		<p>First: <input ngControl="first">
+			<span *ngIf="!ctrlFirst.valid"> [required]</span>
 		</p>
-		<p>Last: <input ng-control="last">
-			<span *ng-if="!ctrlLast.valid"> [required]</span>
+		<p>Last: <input ngControl="last">
+			<span *ngIf="!ctrlLast.valid"> [required]</span>
 		</p>
 	</div>
-	<p>Email: <input ng-control="email">
-		<span *ng-if="!ctrlEmail.valid && ctrlEmail.dirty"> [Not a Computas email]</span>
+	<p>Email: <input ngControl="email">
+		<span *ngIf="!ctrlEmail.valid && ctrlEmail.dirty"> [Not a Computas email]</span>
 	</p>
 </form>
-<div *ng-if="formGroup.valid">Bazinga!</div>
-<div *ng-if="formGroup.dirty">Dirty, dirty, dirty...</div>
+<div *ngIf="formGroup.valid">Bazinga!</div>
+<div *ngIf="formGroup.dirty">Dirty, dirty, dirty...</div>
 							--></code></pre>
 					</section>
 				</section>
@@ -747,37 +723,33 @@ formGroup: ControlGroup = new ControlGroup({
 					<section data-state="routing">
 						<p><small>We need a component that reacts to routes</small></p>
 						<pre style="width:auto"><code class="ts" data-trim contenteditable style="max-height:600px;max-width:1200px"><!--
-import {Component, View, bootstrap, bind} from 'angular2/angular2';
-import {Router, RouteConfig, RouterLink, RouterOutlet,
-	ROUTER_DIRECTIVES, ROUTER_PROVIDERS} from 'angular2/router';
+import {bootstrap} from 'angular2/platform/browser';
+import {Component, provide} from 'angular2/core';
+import {Router, RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS} from 'angular2/router';
 import {Location, LocationStrategy, HashLocationStrategy} from 'angular2/router';
 import {Page1} from 'page1';
 import {Page2} from 'page2';
 @Component({
-      selector: 'my-app'
-    })
-@View({
+      selector: 'my-app',
       template: '...',
-      directives: [RouterLink, RouterOutlet]
+      directives: [ROUTER_DIRECTIVES]
     })
 @RouteConfig([
-	{ path: '/', redirectTo: '/Page1'},
-	{ path: '/Page1', component: Page1, as: 'Page1'},
-	{ path: '/Page2', component: Page2, as: 'Page2'}
+	{ path: '/Page1', name: 'Page1', component: Page1, useAsDefault: true},
+	{ path: '/Page2', name: 'Page2', component: Page2}
 ])
 export class App {
     constructor() { }
 }
-bootstrap(App, [ROUTER_PROVIDERS,
-	bind(LocationStrategy).toClass(HashLocationStrategy)]);
+bootstrap(App, [provide(LocationStrategy, {useClass:HashLocationStrategy}), ROUTER_PROVIDERS]);
 							--></code></pre>
 					</section>
 					<section>
 						<h3>And a template with the router-outlet component</h3>
 						<pre><code class="angular html" data-trim contenteditable><!--
 <nav>
-	<a [router-link]="['/Page1']'">Page 1</a>
-	<a [router-link]="['/Page2']">Page 2</a>
+	<a [routerLink]="['Page1']'">Page 1</a>
+	<a [routerLink]="['Page2']">Page 2</a>
 </nav>
 <main>
 	<router-outlet></router-outlet>
@@ -795,21 +767,18 @@ bootstrap(App, [ROUTER_PROVIDERS,
 					</section>
 					<section data-state="http">
 						<pre style="height:150%"><code class="angular html" data-trim contenteditable style="max-height:500px"><!--
-import {Component, View, bootstrap, NgFor} from 'angular2/angular2';
+import {bootstrap} from 'angular2/platform/browser';
+import {Component} from 'angular2/core';
 import {Http, HTTP_PROVIDERS} from 'angular2/http';
 @Component({
-      selector: 'my-app'
-    })
-@View({
-      template: '<div *ng-for="#item of list">{{item}}</div>',
-      directives: [NgFor]
+      selector: 'my-app',
+      template: '<div *ngFor="#item of list">{{item}}</div>'
     })
 export class App {
     list: Array<string> = []
     constructor(http: Http) {
         http.get('list.json')
-            .map(res => res.json())
-            .subscribe(list => this.list = list);
+            .subscribe(res => this.list = res.json());
     }
 }
 bootstrap(App, HTTP_PROVIDERS);
@@ -826,10 +795,12 @@ bootstrap(App, HTTP_PROVIDERS);
 <!DOCTYPE html>
 <html>
   <head>
+    <script src="https://code.angularjs.org/2.0.0-beta.0/angular2-polyfills.js"></script>
+    <script src="https://code.angularjs.org/tools/typescript.js"></script>
     <script src="https://code.angularjs.org/tools/traceur-runtime.js"></script>
     <script src="https://code.angularjs.org/tools/system.js"></script>
-    <script src="https://code.angularjs.org/tools/typescript.js"></script>
-    <script src="https://code.angularjs.org/2.0.0-alpha.44/angular2.min.js"></script>
+    <script src="https://code.angularjs.org/2.0.0-beta.0/Rx.js"></script>
+    <script src="https://code.angularjs.org/2.0.0-beta.0/angular2.dev.js"></script>
     <script>
       System.config({
         //use typescript for compilation
