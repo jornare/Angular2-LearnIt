@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.11.4/angular-material.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic">
+    <meta name="viewport" content="initial-scale=1" />
+    <!--
+    <script src="https://code.angularjs.org/2.0.0-beta.1/angular2-polyfills.js"></script>
+    <script src="https://code.angularjs.org/tools/typescript.js"></script>
+    <script src="https://code.angularjs.org/tools/traceur-runtime.js"></script>
+    <script src="https://code.angularjs.org/tools/system.js"></script>
+    <script src="https://code.angularjs.org/2.0.0-beta.1/Rx.js"></script>
+    <script src="https://code.angularjs.org/2.0.0-beta.1/angular2.dev.js"></script>-->
+    <script src="../lib/angular2-polyfills.js"></script>
+    <script src="../lib/typescript.js"></script>
+    <script src="../lib/traceur-runtime.js"></script>
+    <script src="../lib/system.js"></script>
+    <script src="../lib/Rx.js"></script>
+    <script src="../lib/angular2.dev.js"></script>
+    <script>
+      System.config({
+        //use typescript for compilation
+        transpiler: 'typescript',
+        //typescript compiler options
+        typescriptOptions: {
+          emitDecoratorMetadata: true
+        },
+        //map tells the System loader where to look for things
+        map: {
+          app: "./app.ts"
+        },
+        //packages defines our app package
+        packages: {
+          app: {
+            defaultExtension: 'ts'
+          }
+        }
+      });
+      System.import('app');
+    </script>
+  </head>
+  <body>
+    <md-button class="md-button md-raised">My Button</md-button>
+    <my-app>Loading...</my-app>
+  </body>
+</html>

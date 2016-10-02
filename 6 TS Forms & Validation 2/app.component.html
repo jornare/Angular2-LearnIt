@@ -1,0 +1,16 @@
+<h1>Forms</h1>
+<form #myForm="ngForm">
+	<div>
+		<p>First: <input name="first" #first="ngModel" required [(ngModel)]="person.first">
+			<span *ngIf="!first.valid"> [required]</span>
+		</p>
+		<p>Last: <input name="last" #last="ngModel" [(ngModel)]="person.last">
+			<span *ngIf="!last.valid"> [required]</span>
+		</p>
+	</div>
+	<p>Email: <input name="email" #email="ngModel" [(ngModel)]="person.email" pattern="[a-z0-9\.]+@computas\.com$">
+		<span *ngIf="!email.valid && myForm.dirty"> [Not a Computas email]</span>
+	</p>
+	<div *ngIf="myForm.valid">Bazinga!</div>
+	<div *ngIf="myForm.dirty">Dirty, dirty, dirty...</div>
+</form>
