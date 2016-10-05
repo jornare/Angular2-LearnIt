@@ -1,17 +1,11 @@
 import {Component} from '@angular/core';
 import {FormGroup, FormControl, Validators} from '@angular/forms';
-//import {CustomValidators} from 'validators';
 
 @Component({
       selector: 'my-app',
       templateUrl: 'app.component.html'
     })
 export class AppComponent {
-    person = {
-        first: '',
-        last: '',
-        email: ''
-    };
     myForm: FormGroup;
     submitted: boolean = false;
 

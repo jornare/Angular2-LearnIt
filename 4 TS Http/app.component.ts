@@ -11,6 +11,8 @@ export class AppComponent {
         http.get('list.json')
             .subscribe(res => {
                 this.list = res.json();
+            }, error => {
+                //catch errors here
             });
     }
 }

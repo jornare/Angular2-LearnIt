@@ -22,7 +22,7 @@ export class Page2 {
         http.get('data/data.json')
             .subscribe(res => {
                 let result = res.json();
-                result.forEach(item => {item.date = new Date(item.date)})
+                result.forEach(item => item.date = new Date(item.date))
                 this.items = result;
             });
     }
