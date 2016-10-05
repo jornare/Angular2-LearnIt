@@ -75,6 +75,13 @@
         margin: 0 auto;
         box-shadow: 1px 1px 1px #888888;
       }
+
+      table.table {
+        font-size: 70%;
+      }
+      table.table thead {
+        font-weight: bold;
+      }
     </style>
     <script src="lib/js/head.min.js"></script>
     <script src="js/reveal.js"></script>
@@ -143,7 +150,11 @@
         });
                 
         add('forms', function(evt) {
-          loadPhone('../5 TS Forms & Validation/index.html');
+          loadPhone('../5 TS Template Driven Forms/index.html');
+        });
+
+        add('forms2', function(evt) {
+          loadPhone('../6 TS Code Driven Forms & Validation/index.html');
         });
         
         add('routing', function(evt) {
@@ -212,7 +223,8 @@
       <img src="img/computas_logo.png" style = "width: 150px"/>
     </div>
     <div style="position:fixed; top:20px;right:30px;color:rgb(7,70,109);font-family: din, 'Helvetica Neue', Helvetica, Arial, sans-serif;">
-      <h1>@jornare</h1>
+      <a style="text-decoration:none;font-size:80%;color:darkblue;" href="http://github.com/jornare/Angular2-LearnIt">github/jornare/Angular2-LearnIt</a>
+      <h1 style="margin-top: 0">@jornare</h1>
     </div>
     <div id="phone" class="phone">
       <iframe id="appPreviewWindow"></iframe>
@@ -655,7 +667,7 @@ export class AppModule {
               --></code></pre>
           </section>
           <section data-state="forms">
-            <h2>The form</h2>
+            <h3>Template driven forms</h3>
             <pre><code class="html" data-trim contenteditable><!--
 <form #myForm="ngForm" (ngSubmit)="onMyFormSubmit()">
   <input #email="ngModel" required pattern="[a-z0-9\.]+@computas\.com$"/>
@@ -664,120 +676,93 @@ export class AppModule {
 </form>
               --></code></pre>
               <p>
-              The form control and  has several state properties we can use, and also adds classes to the form.
-<table>
-  <thead>
-  <tr>
-    <td>State</td><td></td><td>Class if true</td><td>Class if false</td>
-  </tr>
-  </thead>
-  <tbody>
-  <tr>
-    <td>Control has been visited</td><td></td><td>ng-touched</td><td>ng-untouched</td>
-  </tr>
-  <tr>
-      <td>Control's value has changed</td><td></td><td>ng-dirty</td><td>ng-pristine</td>
-  </tr>
-  <tr
-      <td>Control's value is valid</td><td></td><td>ng-valid</td><td>ng-invalid</td>
-  </tr>
-  </tbody>
-</table>
-
+                The form has several state properties we can use, and also adds classes to the form.
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>State</th><th></th><th>Class if true</th><th>Class if false</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Control has been visited</td><td></td><td>ng-touched</td><td>ng-untouched</td>
+                    </tr>
+                    <tr>
+                        <td>Control's value has changed</td><td></td><td>ng-dirty</td><td>ng-pristine</td>
+                    </tr>
+                    <tr>
+                        <td>Control's value is valid</td><td></td><td>ng-valid</td><td>ng-invalid</td>
+                    </tr>
+                  </tbody>
+                </table>
               </p>
           </section>
           <section data-state="forms">
-            <h2>Control</h2>
-            <p>Controls behaviour of all form elements, created by default.</p>
+            <p>The form component class binds it up and controls the submission</p>
             <pre><code class="ts" data-trim contenteditable><!--
-import {Control} from '@angular/common';
+import {Component, ViewChild} from '@angular/core';
+import {NgForm} from '@angular/forms';
 
 @Component({
-  ... 
-})
-class MyApp {
-  constructor( ... ) {
-    this.myInput: Control = new Control('');
-  }
-}
-              --></code></pre>
-            <pre><code class="angular html" data-trim contenteditable><!--
-<input ngControl="myInput">
-              --></code></pre>
-          </section>
-
-          <section>
-            <h2>Validators</h2>
-            <p>Add validators to the Control to control validation</p>
-            <pre><code class="ts" data-trim contenteditable><!--
-export class myApp {
-  myInput: Control = new Control('default value', Validators.required);
-}
-              --></code></pre>
-            <p>Bind it by name</p>
-            <pre><code class="angular html" data-trim contenteditable><!--
-<input ngControl="myInput" [class.invalid]="!myInput.valid">
-              --></code></pre>
-            <p>valid, invalid, pristine, dirty</p>
-          </section>
-          <section>
-            <h2>Custom validators</h2>
-
-            <pre><code class="ts" data-trim contenteditable><!--
-import {Control} from '@angular/common';
-
-export var CustomValidators = {
-  atComputas(control:Control) {
-    if(!control.value.match(/@computas.com$/)) {
-      return {
-        notAtComputas: true
-      };
-    }
-    return null; // return null = valid
-  }
-}
-              --></code></pre>
-            <p>Import and use</p>
-            <pre><code class="ts" data-trim contenteditable><!--
-// assuming the file is called validators.ts
-import {CustomValidators} from 'validators'; 
-...
-export class myApp {
-  myInput: Control = new Control('default value',
-    CustomValidators.atComputas);
-}
-              --></code></pre>
-          </section>
-          <section>
-            <h3>Control group and array</h3>
-            <p></p>
-            <pre><code class="ts" data-trim contenteditable><!--
-ctrlFirst: Control = new Control('');
-ctrlLast: Control = new Control('');
-formGroup: ControlGroup = new ControlGroup({
-    name: new ControlGroup({
-      first: this.ctrlFirst,
-      last: this.ctrlLast
+      selector: 'my-app',
+      templateUrl: 'app.component.html'
     })
-  });
+export class AppComponent {
+    @ViewChild('myForm')
+    myForm: NgForm;
+
+    person = {
+        first: '',
+        last: '',
+        email: ''
+    };
+    submitted: boolean = false;
+
+    constructor() {
+        
+    }
+
+    onMyFormSubmit() {
+        this.submitted = true;
+        this.myForm.resetForm();
+    }
+}
               --></code></pre>
+          </section>
+
+          <section data-state="forms2">
+            <h3>Code driven forms and validators</h3>
+            <pre><code class="ts" data-trim contenteditable><!--
+import {FormGroup, FormControl, Validators} from '@angular/forms';
+@Component(...)
+export class AppComponent {
+  myForm: FormGroup;
+  submitted: boolean = false;
+  ngOnInit() {
+    this.myForm = new FormGroup({
+      first: new FormControl('', Validators.required),
+      last: new FormControl('', Validators.minLength(3)),
+      email: new FormControl('',
+        Validators.pattern('[a-z0-9\.]+@computas\.com$'))
+    });
+  }
+}
+              --></code></pre>
+          </section>
+          <section>
+            <p>Bind the form to the FormGroup</p>
             <pre><code class="angular html" data-trim contenteditable><!--
-<form [ngFormModel]="formGroup">
-  <div ngControlGroup="name">
-    <p>First: <input ngControl="first">
-      <span *ngIf="!ctrlFirst.valid"> [required]</span>
-    </p>
-    <p>Last: <input ngControl="last">
-      <span *ngIf="!ctrlLast.valid"> [required]</span>
-    </p>
-  </div>
-  <p>Email: <input ngControl="email">
-    <span *ngIf="!ctrlEmail.valid && ctrlEmail.dirty"> [Not a Computas email]</span>
-  </p>
-</form>
-<div *ngIf="formGroup.valid">Bazinga!</div>
-<div *ngIf="formGroup.dirty">Dirty, dirty, dirty...</div>
+<form novalidate [formGroup]="myForm" (ngSubmit)="onMyFormSubmit()">
               --></code></pre>
+            <p>And the inputs to their controls</p>
+            <pre><code class="angular html" data-trim contenteditable><!--
+<input formControlName="first" />
+              --></code></pre>
+            <p>Add validation messages</p>
+            <pre><code class="angular html" data-trim contenteditable><!--
+<span class="error" *ngIf="myForm.controls.first.touched &&
+  !myForm.controls.first.valid">[required]</span>
+              --></code></pre>       
           </section>
         </section>
         <section>
@@ -786,68 +771,90 @@ formGroup: ControlGroup = new ControlGroup({
             <p>Navigate our app without refreshing the full page</p>
           </section>
           <section data-state="routing">
-            <p><small>We need a component that reacts to routes</small></p>
+            <p><small>We need to create a module for our routes</small></p>
             <pre style="width:auto"><code class="ts" data-trim contenteditable style="max-height:600px;max-width:1200px"><!--
-import {bootstrap} from '@angular/platform/browser';
-import {Component, provide} from '@angular/core';
-import {Router, RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS} from '@angular/router';
-import {Location, LocationStrategy, HashLocationStrategy} from '@angular/router';
-import {Page1} from 'page1';
-import {Page2} from 'page2';
-@Component({
-      selector: 'my-app',
-      template: '...',
-      directives: [ROUTER_DIRECTIVES]
-    })
-@RouteConfig([
-  { path: '/Page1', name: 'Page1', component: Page1, useAsDefault: true},
-  { path: '/Page2', name: 'Page2', component: Page2}
-])
-export class App {
-    constructor() { }
-}
-bootstrap(App, [provide(LocationStrategy, {useClass:HashLocationStrategy}), ROUTER_PROVIDERS]);
+import { ModuleWithProviders }  from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+import {Page1} from './page1'; // My Page1 component
+import {Page2} from './page2'; // My Page2 component
+
+const appRoutes: Routes = [
+    {
+        path: 'Page1',
+        component: Page1
+    },
+    {
+        path: 'Page2',
+        component: Page2
+    },
+    {
+        path: '',
+        redirectTo: 'Page1',
+        pathMatch: 'full'
+    }
+];
+
+export const routing: ModuleWithProviders = RouterModule.forRoot(appRoutes);
               --></code></pre>
           </section>
-          <section>
-            <h3>And a template with the router-outlet component</h3>
+          <section data-state="routing">
+            <h3>And a component using the router-outlet component</h3>
             <pre><code class="angular html" data-trim contenteditable><!--
 <nav>
-  <a [routerLink]="['Page1']'">Page 1</a>
-  <a [routerLink]="['Page2']">Page 2</a>
+  <a routerLink="Page1">Page 1</a>
+  <a routerLink="Page2">Page 2</a>
+  <button (click)="navigateTo('Page2')">Page 2 (by code)</button>
 </nav>
 <main>
   <router-outlet></router-outlet>
-  Content will be inserted here
+  Content will be inserted here, after the router-outlet
 </main>
               --></code></pre>
           </section>
-          
+          <section data-state="routing">
+            <h3>We can also navigate the router from code</h3>
+            <pre><code class="angular ts" data-trim contenteditable><!--
+import {Router} from '@angular/router';
+@Component(...)
+export class AppComponent {
+  constructor(private router: Router) {}
+
+  navigateTo(link) {
+    this.router.navigate([link]);
+  }
+}
+              --></code></pre>
+          </section>
         </section>
         
         <section>
           <section data-state="hidephone">
             <h2>HTTP</h2>
             <p>Talking to the/a server</p>
+            <p>Using the HttpModule</p>
           </section>
           <section data-state="http">
-            <pre style="height:150%"><code class="angular html" data-trim contenteditable style="max-height:500px"><!--
-import {bootstrap} from '@angular/platform/browser';
+            <pre style="height:150%"><code class="angular ts" data-trim contenteditable style="max-height:500px"><!--
 import {Component} from '@angular/core';
-import {Http, HTTP_PROVIDERS} from '@angular/http';
+import {Http} from '@angular/http';
+
 @Component({
-      selector: 'my-app',
-      template: '<div *ngFor="let item of list">{{item}}</div>'
-    })
-export class App {
-    list: Array<string> = []
-    constructor(http: Http) {
-        http.get('list.json')
-            .subscribe(res => this.list = res.json());
-    }
+    selector: 'my-app',
+    template: `<ul><li *ngFor="let item of list">{{item}}</li></ul>`
+  })
+export class AppComponent {
+  list: string[] = [];
+  constructor(http: Http) {
+    http.get('list.json')
+      .subscribe(res => {
+          this.list = res.json();
+      }, error => {
+          //catch errors here
+      });
+  }
 }
-bootstrap(App, HTTP_PROVIDERS);
               --></code></pre>
+              <p>Remember to import the HttpModule in your component module</p>
           </section>
         </section>
             
@@ -855,70 +862,56 @@ bootstrap(App, HTTP_PROVIDERS);
           <section data-state="hidephone">
             <h2>Creating an app with TypeScript</h2>
           </section>
-          <section data-state="example1">
+          <section>
+            <h3>Pre-buildt Angular2 bundle</h3>
             <pre style="height:150%"><code id="hello1" class="angular html" data-trim contenteditable style="max-height:640px"><!--
 <!DOCTYPE html>
 <html>
+
   <head>
-    <script src="https://code.angularjs.org/2.0.0-beta.0/angular2-polyfills.js"></script>
-    <script src="https://code.angularjs.org/tools/typescript.js"></script>
-    <script src="https://code.angularjs.org/tools/traceur-runtime.js"></script>
-    <script src="https://code.angularjs.org/tools/system.js"></script>
-    <script src="https://code.angularjs.org/2.0.0-beta.0/Rx.js"></script>
-    <script src="https://code.angularjs.org/2.0.0-beta.0/angular2.dev.js"></script>
+    <base href="/" />
+    <script src="../lib/angular2.bundle.ts.js"></script>
+    <script src="../shared/system.config.js"></script>
     <script>
-      System.config({
-        //use typescript for compilation
-        transpiler: 'typescript',
-        //typescript compiler options
-        typescriptOptions: {
-          emitDecoratorMetadata: true
-        },
-        //map tells the System loader where to look for things
-        map: {
-          app: "./app.ts"
-        },
-        //packages defines our app package
-        packages: {
-          app: {
-            defaultExtension: 'ts'
-          }
-        }
-      });
-      System.import('app');
-    </script>
+          System.import('app');
+      </script>
   </head>
+
   <body>
     <my-app>Loading...</my-app>
   &lt;/body>
+
 </html>
               --></code></pre>
           </section>
           <section>
-            <p>Add <a href="http://getbootstrap.com">Bootstrap</a> css</p>
+            <h3>Or use a start-kit like<br /> 
+            Angular2-Webpack-Starter</h3>
+            <ul>
+              <li>Compiling</li>
+              <li>Bundling</li>
+              <li>E2E & Component Testing</li>
+              <li>Live & Hot Module reload</li>
+              <li>Code coverage</li>
+            </ul>
           </section>
           <section>
-            <p>Steal a <a href="http://getbootstrap.com/examples/dashboard/">Bootstrap template</a></p>
-          </section>
-          <section>
-            <p>Make a data component</a></p>
-          </section>
-          <section>
-            <p>Refactor it to a service</a></p>
-          </section>
-          
+            <p>Use Material design or <a href="http://getbootstrap.com/examples/dashboard/">bootstrap</a></p>
+            <p>Check out <a href="http://ionicframework.com/docs/v2/">Ionic framework</a></p>
+          </section>      
         </section>
         
         <section data-state="hidephone">
           <h2>Resources & references</h2>
           <div><a href="http://angular.io">Angular2</a></div>
-          <div><a href="http://material.angularjs.org">Angular1 Material design</a></div>
-          <div><a href="http://go.rangle.io/batarangle">Batarangle - Debugging for Angular2</a></div>
+          <div><a href="http://material.angular.io">Angular2 Material design (in alpha)</a></div>
+          <div><a href="https://augury.angular.io/">Augury - Debugging for Angular2</a></div>
+          <div><a href="https://github.com/AngularClass/angular2-webpack-starter">Angular2 Webpack Starter - for packing, compiling++</a></div>
           <h3>Also useful</h3>
-          <div><a href="http://angular-meteor.com">Angular-meteor</a></div>
-          <div><a href="https://egghead.io/series/angular-2-fundamentals?utm_source=drip&utm_medium=email&utm_campaign=free-angular-2-screencasts&__s=scod2muuw5qwznspfz9v">Angular2 fundamentals on egghead.io</a></div>
+          <div><a href="https://www.angular-meteor.com/angular2">Meteor for Angular2</a></div>
+          <div><a href="http://ionicframework.com/docs/v2/">Ionic framework</a></div>
+          <div><a href="http://material.angularjs.org">Angular1 Material design</a></div>
           <div><a href="http://getbootstrap.com">Bootstrap CSS framework</a></div>
-          <div><a href="http://webpack.github.io">Webpack - for packing &amp; compiling</a></div>
         </section>
       </div>
 

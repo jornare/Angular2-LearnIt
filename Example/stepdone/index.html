@@ -1,59 +1,19 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <base href="./">
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+<head>
+  <base href="./" />
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="style/dashboard.css">
-    <!--
-    <script src="https://code.angularjs.org/2.0.0-beta.1/angular2-polyfills.js"></script>
-    <script src="https://code.angularjs.org/tools/typescript.js"></script>
-    <script src="https://code.angularjs.org/tools/traceur-runtime.js"></script>
-    <script src="https://code.angularjs.org/tools/system.js"></script>
-    <script src="https://code.angularjs.org/2.0.0-beta.1/Rx.js"></script>
-    <script src="https://code.angularjs.org/2.0.0-beta.1/angular2.dev.js"></script>
-    <script src="https://code.angularjs.org/2.0.0-beta.1/router.dev.js"></script>
-    <script src="https://code.angularjs.org/2.0.0-beta.1/http.min.js"></script>-->
-    <script src="../../lib/angular2-polyfills.js"></script>
-    <script src="../../lib/typescript.js"></script>
-    <script src="../../lib/traceur-runtime.js"></script>
-    <script src="../../lib/system.js"></script>
-    <script src="../../lib/Rx.js"></script>
-    <script src="../../lib/angular2.dev.js"></script>
-    <script src="../../lib/router.dev.js"></script>
-    <script src="../../lib/http.min.js"></script>
-    <script>
-      System.config({
-        //use typescript for compilation
-        transpiler: 'typescript',
-        baseURL: './', //Important!
-        //typescript compiler options
-        typescriptOptions: {
-          emitDecoratorMetadata: true
-        },
-        //map tells the System loader where to look for things
-        map: {
-          app: "./app.ts",          
-          page1: "./views/page1/page1.ts",          
-          page2: "./views/page2/page2.ts",          
-        },
-        //packages defines our app package
-        packages: {
-          app: {
-            defaultExtension: 'ts'
-          },
-          services: {
-            defaultExtension: 'ts'
-          }
-        }
-      });
-      System.import('app');
+  <script src="../../lib/angular2.bundle.ts.js"></script>
+  <script src="../system.config.js"></script>
+  <script>
+        System.import('app');
     </script>
-  </head>
-  <body>
-    <my-app>Loading...</my-app>
-  </body>
+</head>
+
+<body>
+  <my-app>Loading...</my-app>
+</body>
+
 </html>

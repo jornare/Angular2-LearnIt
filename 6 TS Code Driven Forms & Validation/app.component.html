@@ -1,0 +1,49 @@
+<style>
+	label {
+		width: 50px;
+		display: inline-block;
+	}
+	form.ng-pristine .pristine {
+		font-weight: bold;
+	}
+
+	form.ng-dirty .dirty {
+		font-weight: bold;
+	}
+	form.ng-touched .touched {
+		font-weight: bold;
+	}
+	form.ng-valid .valid {
+		font-weight: bold;
+	}
+	.error {
+		color: red;
+		display: block;
+	}
+</style>
+<h1>Code driven Forms</h1>
+<form novalidate [formGroup]="myForm" (ngSubmit)="onMyFormSubmit()">
+	<div>
+		<p>
+			<label for="first">First:</label>
+			<input formControlName="first" />
+			<span class="error" *ngIf="myForm.controls.first.touched && !myForm.controls.first.valid">[required]</span>
+		</p>
+		<p>
+			<label for="last">Last:</label>
+			<input formControlName="last" />
+			<span class="error" *ngIf="myForm.controls.last.touched && !myForm.controls.last.valid">[Minimum 3 characters]</span>
+		</p>
+	</div>
+	<p>
+		<label for="email">Email:</label>
+		<input formControlName="email"   />
+		<span class="error" *ngIf="!myForm.controls.email.valid && myForm.dirty">[Not a Computas email]</span>
+	</p>
+	<p>
+		<button type="submit" [disabled]="!myForm.valid">Submit</button>
+	</p>
+	<div *ngIf="myForm.valid">Bazinga! it's valid!</div>
+	<div *ngIf="myForm.dirty">Dirty, dirty, dirty...</div>
+	<div *ngIf="submitted">You submitted the form!</div>
+</form>

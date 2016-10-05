@@ -1,10 +1,10 @@
 <h2>This is page 2</h2>
 <p>Content from html file</p>
 <div class="table-responsive">
-  <form [ngFormModel]="formGroup">
-    <label>Title</label><input type="text" class="form-control" ngControl="title"/>
-    <label>Count</label><input type="number" class="form-control" ngControl="count"/>
-    <button class="btn" (click)="addTitle()">Add</button>
+  <form novalidate [formGroup]="formGroup" (submit)="addTitle()">
+    <label>Title</label><input type="text" class="form-control" formControlName="title"/>
+    <label>Count</label><input type="number" class="form-control" formControlName="count"/>
+    <button type="submit" class="btn">Add</button>
   </form>
   Searching for: {{search.value}}
   <table class="table table-striped">
@@ -18,7 +18,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="#item of items; #i = index;">
+      <tr *ngFor="let item of items; let i = index;">
         <td>{{i}}</td>
         <td>{{item.id}}</td>
         <td>{{item.title}}</td>

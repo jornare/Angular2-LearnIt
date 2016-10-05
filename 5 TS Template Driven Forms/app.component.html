@@ -1,0 +1,55 @@
+<style>
+	label {
+		width: 50px;
+		display: inline-block;
+	}
+	form.ng-pristine .pristine {
+		font-weight: bold;
+	}
+
+	form.ng-dirty .dirty {
+		font-weight: bold;
+	}
+	form.ng-touched .touched {
+		font-weight: bold;
+	}
+	form.ng-valid .valid {
+		font-weight: bold;
+	}
+	.error {
+		color: red;
+		display: block;
+	}
+</style>
+
+<h1>Template driven Forms</h1>
+<form #myForm="ngForm" (ngSubmit)="onMyFormSubmit()">
+	<div>
+		<p>
+			<label for="first">First:</label>
+			<input name="first" #first="ngModel" required [(ngModel)]="person.first" />
+			<span class="error" *ngIf="first.touched && !first.valid">[required]</span>
+		</p>
+		<p>
+			<label for="last">Last:</label>
+			<input name="last" #last="ngModel" [(ngModel)]="person.last" minlength="3">
+			<span class="error" *ngIf="last.touched && !last.valid">[Minimum 3 characters]</span>
+		</p>
+	</div>
+	<p>
+		<label for="email">Email:</label>
+		<input name="email" #email="ngModel" [(ngModel)]="person.email" pattern="[a-z0-9\.]+@computas\.com$">
+		<span class="error" *ngIf="!email.valid && myForm.dirty">[Not a Computas email]</span>
+	</p>
+	<p>
+		<button type="submit" [disabled]="!myForm.valid">Submit</button>
+	</p>
+	<div *ngIf="myForm.valid">Bazinga! it's valid!</div>
+	<div *ngIf="myForm.dirty">Dirty, dirty, dirty...</div>
+	<div *ngIf="submitted">You submitted the form!</div>
+	<h2>Classes applied to form</h2>
+	<div class="pristine">.ng-pristine</div>
+	<div class="dirty">.ng-dirty</div>
+	<div class="touched">.ng-touched</div>
+	<div class="valid">.ng-valid</div>
+</form>

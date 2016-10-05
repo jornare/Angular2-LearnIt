@@ -1,5 +1,5 @@
 //Example orderBy pipe
-import {Pipe, PipeTransform} from 'angular2/angular2';
+import {Pipe, PipeTransform} from '@angular/core';
 @Pipe({
     name: 'orderBy'
 })
