@@ -1,0 +1,41 @@
+body {
+    margin: 0 16px;
+    padding: 0;
+    font-size: 18px;
+    color: darkslateblue;
+}
+h1, h2 {
+    margin-left: -16px;
+    margin-right: -16px;
+    font-family: 'Lato', sans-serif;
+    padding: 4px 16px;
+    background: lightblue;
+    border-radius: 4px;
+    box-shadow: 6px 6px 2px #888888;
+}
+
+input, button {
+    font-size: 20px;
+}
+
+label {
+    width: 50px;
+    display: inline-block;
+}
+form.ng-pristine .pristine {
+    font-weight: bold;
+}
+
+form.ng-dirty .dirty {
+    font-weight: bold;
+}
+form.ng-touched .touched {
+    font-weight: bold;
+}
+form.ng-valid .valid {
+    font-weight: bold;
+}
+.error {
+    color: red;
+    display: block;
+}
