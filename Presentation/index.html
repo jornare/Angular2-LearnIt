@@ -186,9 +186,9 @@
         phoneVisible ? hidePhone() : showPhone();
       }
       
-      function showPhone() {
-        phone.style.right = '0px';
-        phoneVisible = true;
+      function showPhone(hint) {
+        phone.style.right = (hint ? '-370px': '0px');
+        phoneVisible = hint ? false : true;
       }
       
       function hidePhone() {
@@ -198,7 +198,7 @@
       
       function loadPhone(uri) {
         appPreviewWindow.src = uri;
-        showPhone();
+        showPhone(true);
       }
       
       function loadPhoneContent(content) {
@@ -251,7 +251,7 @@
           <p>We will</p>
           <p>Review some history</p>
           <p>Talk some theory</p>
-          <p>Build a small app</p>
+          <p>Look at some coding tools</p>
         </section>
         
         <section>
@@ -400,10 +400,12 @@ export function myFunc(){}
             <h2><img src="img/angularlogo.png" class="inline" style="width:17%"/>Core concepts</h2>
             <ul>
               <li>Component</li>
+              <li>Directive</li>
+              <li>Router</li>
+              <li>Service / Injectable</li>
               <li>View & Template</li>
               <li>Class</li>
               <li>Bootstrap</li>
-              <li>Service</li>
             </ul>
           </section>
           <section>
@@ -427,7 +429,7 @@ export function myFunc(){}
             <pre><code class="ts" data-trim contenteditable><!--
 import {Component} from '@angular/core';
 @Component({
-  selector: 'my-app'
+  selector: 'my-app' // equivalent to the element <my-app></my-app>
 });
               --></code></pre>
               
@@ -436,8 +438,6 @@ ng.core.Component({
   selector: 'my-app'
 });
               --></code></pre>
-              <p>host
-              </p>
           </section>
           <section>
             <h3>Template</h3>
@@ -445,8 +445,7 @@ ng.core.Component({
 import {Component} from '@angular/core';
 @Component({
   selector: 'my-app',
-  template: '<h1>Hello UIO</h1>', // Alternatively templateUrl: 'myTemplate.html'
-  directives: [ChildComponent] // Components and directives used in the template, excluding core directives
+  template: '<h1>Hello UIO</h1>' // Alternatively templateUrl: 'myTemplate.html'
 });
               --></code></pre>
             <pre><code class="js" data-trim contenteditable><!--
@@ -558,35 +557,7 @@ export class MyComponent() {
               <p>keydown, keyup</p>
               <p>mouseover, mouseenter, mouseleave</p>
           </section>
-          <section>
-            <h2>[Property]="Expression"</h2>
-            <p>Properties are reactive listeners</p>
-            <pre><code class="angular html" data-trim contenteditable><!--
-<div [style.color]="myValue.value">
-  <input #myValue />
-</div>
-              --></code></pre>
-              <p>
-                src, href, visible, hidden, style, class, class={'name':'condition'}
-              </p>
-          </section>
-          <section>
-            <h3>*directivetemplate="Expression"</h3>
-            <p>The star lets you void writing the template element</p>
-            <pre><code class="angular html" data-trim contenteditable><!--
-<div *ngFor="let item of items; let i = index;">
-  {{item}}
-</div>
-              --></code></pre>
-              <p>is the same as</p>
-            <pre><code class="angular html" data-trim contenteditable><!--
-<template ngFor [ngForOf]="items" #t="$implicit" #index="i">
-  <div [model]="item" [index]="i">
-    {{item}}
-  </div>
-</template>
-              --></code></pre>
-          </section>
+         
         </section>
         <section>
           <section>
@@ -612,6 +583,33 @@ export class MyDirectivesModule{
             <h3>Core and Common directives are automatically included</h3>
             <p>ngIf, ngFor, ngSwitch, ngSwitchWhen, ngModel</p>
           </section>
+ <section>
+            <h2>[Directive]="Expression"</h2>
+            <p>Directives are reactive listeners</p>
+            <pre><code class="angular html" data-trim contenteditable><!--
+<div [ngStyle]="{'color': myValue.value}">
+  <input #myValue />
+</div>
+              --></code></pre>
+              <p>
+                ngStyle, ngClass, ngSwitch ... (or custom directives)
+              </p>
+          </section>
+          <section>
+            <h3>*directivetemplate="Expression"</h3>
+            <p>The star lets you void writing the template element</p>
+            <pre><code class="angular html" data-trim contenteditable><!--
+<div *ngFor="let item of items; let i = index;">
+  {{item}}
+</div>
+              --></code></pre>
+              <p>is the same as</p>
+            <pre><code class="angular html" data-trim contenteditable><!--
+<template ngFor let-item [ngForOf]="items" let-i="index" [ngForTrackBy]="trackByFn">
+  <div>{{item}}</div>
+</template>
+              --></code></pre>
+          </section>
           <section>
             <h3>*ngFor=&quot;let item of items&quot;</h3>
             <p>Iterate over a list</p>
@@ -621,7 +619,7 @@ export class MyDirectivesModule{
 </ul>
               --></code></pre>
             <pre><code class="angular html" data-trim contenteditable><!--
-<ul *ngFor="let item of items; var i = index;">
+<ul *ngFor="let item of items; let i = index;">
   <li>{{i}} {{item}}</li>
 </ul>
               --></code></pre>
@@ -668,7 +666,7 @@ export class AppModule {
           </section>
           <section data-state="forms">
             <h3>Template driven forms</h3>
-            <pre><code class="html" data-trim contenteditable><!--
+            <pre><code class="html angular" data-trim contenteditable><!--
 <form #myForm="ngForm" (ngSubmit)="onMyFormSubmit()">
   <input #email="ngModel" required pattern="[a-z0-9\.]+@computas\.com$"/>
   <div [hidden]="email.valid || email.pristine">Email not valid</div>
@@ -717,10 +715,6 @@ export class AppComponent {
         email: ''
     };
     submitted: boolean = false;
-
-    constructor() {
-        
-    }
 
     onMyFormSubmit() {
         this.submitted = true;
@@ -857,7 +851,32 @@ export class AppComponent {
               <p>Remember to import the HttpModule in your component module</p>
           </section>
         </section>
-            
+        <section>
+          <section>
+          <h2>Reactive Extensions, RxJs</h2>
+          <p>RxJs is at core of Angular 2 and provides a set of methods to deal with data streams</p>
+          <p>
+          </p>
+          </section>
+          <section>
+<pre style="height:150%"><code class="ts" data-trim contenteditable style="max-height:500px"><!--
+/* Get stock data somehow */
+const source = getAsyncStockData(); // an Observable
+
+const subscription = source
+  .filter(quote => quote.price > 30)
+  .map(quote => quote.price)
+  .subscribe(
+    price => console.log(`Prices higher than $30: ${price}`),
+    err => console.log(`Something went wrong: ${err.message}`);
+  );
+
+/* When we're done */
+subscription.dispose();
+              --></code></pre>
+              <p>Just a taste of the most common use cases</p>
+          </section>
+        </section>
         <section>
           <section data-state="hidephone">
             <h2>Creating an app with TypeScript</h2>
@@ -896,7 +915,7 @@ export class AppComponent {
             </ul>
           </section>
           <section>
-            <p>Use Material design or <a href="http://getbootstrap.com/examples/dashboard/">bootstrap</a></p>
+            <p>Use <a href="http://material.angular.io">Material design for A2</a> or <a href="http://getbootstrap.com/examples/dashboard/">bootstrap</a></p>
             <p>Check out <a href="http://ionicframework.com/docs/v2/">Ionic framework</a></p>
           </section>      
         </section>
@@ -907,6 +926,7 @@ export class AppComponent {
           <div><a href="http://material.angular.io">Angular2 Material design (in alpha)</a></div>
           <div><a href="https://augury.angular.io/">Augury - Debugging for Angular2</a></div>
           <div><a href="https://github.com/AngularClass/angular2-webpack-starter">Angular2 Webpack Starter - for packing, compiling++</a></div>
+          <div><a href="https://github.com/ReactiveX/rxjs">RxJS - reactive extensions</a></div>
           <h3>Also useful</h3>
           <div><a href="https://www.angular-meteor.com/angular2">Meteor for Angular2</a></div>
           <div><a href="http://ionicframework.com/docs/v2/">Ionic framework</a></div>

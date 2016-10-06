@@ -1,4 +1,26 @@
-<nav class="navbar navbar-inverse navbar-fixed-top">
+<style>
+	.fill-remaining-space {
+		flex: 1 1 auto;
+	}
+</style>
+<md-toolbar color="secondary" class="navbar-fixed-top">
+	<button md-icon-button (click)="sidenav.open()"><md-icon>menu</md-icon></button>
+	<span class="fill-remaining-space"></span>
+	<form class="navbar-form navbar-right">
+		<md-input name="search" type="text" class="form-control" placeholder="Search..." [(ngModel)]="search.value"></md-input>
+	</form>
+</md-toolbar>
+  <md-sidenav-layout>
+    <md-sidenav #sidenav (open)="mybutton.focus()">
+      Start Sidenav.
+      <br>
+      <button md-button #mybutton (click)="sidenav.close()">Close</button>
+    </md-sidenav>
+	<router-outlet></router-outlet>
+  </md-sidenav-layout>
+
+
+<!--<nav class="navbar navbar-inverse navbar-fixed-top">
 	<div class="container-fluid">
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -14,6 +36,9 @@
 				<li><a routerLink="Page1">Page 1</a></li>
 				<li><a routerLink="Page2">Page 2</a></li>
 			</ul>
+			    <md-checkbox >
+asf
+    </md-checkbox>
 			<form class="navbar-form navbar-right">
 				<input name="search" type="text" class="form-control" placeholder="Search..." [(ngModel)]="search.value">
 			</form>
@@ -37,4 +62,4 @@
 	</div>
 </div>
 
-<footer></footer>
+<footer></footer>-->

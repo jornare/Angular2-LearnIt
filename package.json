@@ -1,34 +1,37 @@
 {
-    "author": {
-        "name": "Jørn Are Hatlelid"
-    },
-    "description": "Learn Angular2 basics",
-    "license": "MIT",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/jornare/Angular2-LearnIt"
-    },
-    "scripts": {
-        "postinstall": "node ./scripts/postinstall.js"
-    },
-    "dependencies": {
-        "@angular/common": "~2.0.1",
-        "@angular/compiler": "~2.0.1",
-        "@angular/core": "~2.0.1",
-        "@angular/forms": "~2.0.1",
-        "@angular/http": "~2.0.1",
-        "@angular/platform-browser": "~2.0.1",
-        "@angular/platform-browser-dynamic": "~2.0.1",
-        "@angular/router": "~3.0.1",
-        "@angular/upgrade": "~2.0.1",
-        "angular-in-memory-web-api": "~0.1.1",
-        "bootstrap": "^3.3.7",
-        "core-js": "^2.4.1",
-        "reflect-metadata": "^0.1.8",
-        "rxjs": "5.0.0-beta.12",
-        "systemjs": "0.19.39",
-        "traceur": "0.0.111",
-        "typescript": "^2.0.3",
-        "zone.js": "^0.6.25"
-    }
+  "name": "Angular2 Learn It",
+  "version": "2",
+  "author": {
+    "name": "Jørn Are Hatlelid"
+  },
+  "description": "Learn Angular2 basics",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jornare/Angular2-LearnIt"
+  },
+  "scripts": {
+    "postinstall": "node ./scripts/postinstall.js"
+  },
+  "dependencies": {
+    "@angular/common": "~2.0.1",
+    "@angular/compiler": "~2.0.1",
+    "@angular/core": "~2.0.1",
+    "@angular/forms": "~2.0.1",
+    "@angular/http": "~2.0.1",
+    "@angular/material": "^2.0.0-alpha.9-3",
+    "@angular/platform-browser": "~2.0.1",
+    "@angular/platform-browser-dynamic": "~2.0.1",
+    "@angular/router": "~3.0.1",
+    "@angular/upgrade": "~2.0.1",
+    "angular-in-memory-web-api": "~0.1.1",
+    "bootstrap": "^3.3.7",
+    "core-js": "^2.4.1",
+    "reflect-metadata": "^0.1.8",
+    "rxjs": "5.0.0-beta.12",
+    "systemjs": "0.19.39",
+    "traceur": "0.0.111",
+    "typescript": "^2.0.3",
+    "zone.js": "^0.6.25"
+  }
 }
