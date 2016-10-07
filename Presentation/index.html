@@ -585,7 +585,7 @@ export class MyDirectivesModule{
           </section>
  <section>
             <h2>[Directive]="Expression"</h2>
-            <p>Directives are reactive listeners</p>
+            <p>Directives can be reactive listeners</p>
             <pre><code class="angular html" data-trim contenteditable><!--
 <div [ngStyle]="{'color': myValue.value}">
   <input #myValue />
@@ -633,6 +633,18 @@ export class MyDirectivesModule{
 </div>
               --></code></pre>
 
+          </section>
+          <section>
+            <h2>Create your own directive</h2>
+            <pre><code class="ts" data-trim contenteditable><!--
+            import { Directive, ElementRef, Input, Renderer } from '@angular/core';
+@Directive({ selector: '[myHighlight]' })
+export class HighlightDirective {
+    constructor(el: ElementRef, renderer: Renderer) {
+       renderer.setElementStyle(el.nativeElement, 'backgroundColor', 'yellow');
+    }
+}
+--></code></pre>
           </section>
           
         </section>
